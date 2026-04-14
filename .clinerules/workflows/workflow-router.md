@@ -9,6 +9,7 @@ Then:
    - new feature -> `intake-feature` + full feature pipeline
    - code change update -> `update-doc-from-code-change`
    - legacy docs backfill -> `backfill-doc-from-codebase`
+   - reverse-engineer feature from existing implementation -> `reverse-engineer-feature-docs`
    - stale docs review cycle -> `periodic-doc-refresh`
    - incident follow-up -> `incident-driven-doc-update`
    - mixed source synthesis -> `create-doc-from-existing-assets`

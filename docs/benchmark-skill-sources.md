@@ -107,3 +107,19 @@ Adopted patterns:
 
 - multi-view architecture documentation
 - explicit decision and rationale structure
+
+## Community Workflow Benchmark (Reverse Engineering)
+
+### Claude Code Workflows (community)
+
+- Recipe reverse-engineer skill
+  - https://github.com/shinpr/claude-code-workflows/blob/main/skills/recipe-reverse-engineer/SKILL.md
+
+Adopted patterns:
+
+- per-unit sequential processing for large reverse-engineering scope
+- explicit step artifacts (`STEP_x`) to preserve audit trail between phases
+- separate generation and verification steps (independent consistency checks)
+- review -> conditional revision loop with max revision cycles
+- score-based escalation (`consistencyScore` threshold) to mandatory human review
+- optional fullstack split (backend and frontend design-doc streams)

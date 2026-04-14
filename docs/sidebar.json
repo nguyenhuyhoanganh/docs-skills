@@ -1,0 +1,41 @@
+﻿[
+  {
+    "label": "Get started",
+    "items": [
+      { "label": "Overview", "slug": "docs" },
+      { "label": "System detail", "slug": "MO_TA_CHI_TIET_HE_THONG_TAI_LIEU_VI" },
+      { "label": "Benchmark", "slug": "docs/benchmark-skill-sources" }
+    ]
+  },
+  {
+    "label": "Governance",
+    "items": [
+      { "label": "Docs contributing", "slug": "DOCS_CONTRIBUTING" },
+      { "label": "Docs style guide", "slug": "DOCS_STYLEGUIDE" },
+      { "label": "Quality gates", "slug": "QUALITY_GATES" },
+      { "label": "Template index", "slug": "TEMPLATE_INDEX" }
+    ]
+  },
+  {
+    "label": "Templates",
+    "items": [
+      { "label": "Feature brief", "slug": "docs/templates/feature-brief.template" },
+      { "label": "Requirements", "slug": "docs/templates/requirements.template" },
+      { "label": "HLD", "slug": "docs/templates/hld.template" },
+      { "label": "DLD", "slug": "docs/templates/dld.template" },
+      { "label": "API spec", "slug": "docs/templates/api-spec.template" },
+      { "label": "Ops runbook", "slug": "docs/templates/ops-runbook.template" },
+      { "label": "Security model", "slug": "docs/templates/security-model.template" },
+      { "label": "Traceability", "slug": "docs/templates/traceability.template" },
+      { "label": "Release readiness", "slug": "docs/templates/release-readiness.template" },
+      { "label": "ADR", "slug": "docs/templates/adr.template" }
+    ]
+  },
+  {
+    "label": "Releases",
+    "items": [
+      { "label": "Changelog", "slug": "docs/changelog/index" },
+      { "label": "Latest", "slug": "docs/changelog/latest" }
+    ]
+  }
+]

@@ -24,6 +24,7 @@ Only after discovery can authoring workflows continue.
 4. Create doc from existing assets (mixed source synthesis)
 5. Periodic refresh of stale docs (review-date driven)
 6. Incident-driven documentation updates (runbooks, postmortem links)
+7. Reverse-engineer feature docs from implemented code (unit-based verify/review loops)
 
 Router workflow:
 - `.clinerules/workflows/workflow-router.md`
@@ -67,6 +68,19 @@ Skill:
 ## External Benchmark Sources
 
 - `docs/benchmark-skill-sources.md`
+
+## Documentation Governance Pack (Software Development)
+
+To run this repository as a full software-documentation operating model, use:
+
+- `docs/index.md` (central docs entrypoint)
+- `docs/sidebar.json` (single-source navigation taxonomy)
+- `DOCS_CONTRIBUTING.md` (docs contribution process)
+- `DOCS_STYLEGUIDE.md` (writing standards)
+- `QUALITY_GATES.md` (phase quality gates)
+- `TEMPLATE_INDEX.md` (doc-type to template mapping)
+- `docs/templates/*` (artifact templates)
+- `docs/changelog/latest.md` (latest documentation changes)
 
 ## What Is Installed
 
