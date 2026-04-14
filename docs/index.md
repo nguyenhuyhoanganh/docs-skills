@@ -5,7 +5,7 @@ Mục tiêu của bộ tài liệu này là chuẩn hóa tài liệu phát tri�
 ## 1) Get Started
 
 - [README](../README.md): Tổng quan nhanh.
-- [Mô tả chi tiết hệ thống](../MO_TA_CHI_TIET_HE_THONG_TAI_LIEU_VI.md): Bản mô tả đầy đủ skill/workflow.
+- [Mô tả chi tiết hệ thống](../description.md): Bản mô tả đầy đủ skill/workflow.
 - [Benchmark nguồn tham chiếu](./benchmark-skill-sources.md): Nguồn chuẩn từ Gemini/OpenAI/Anthropic/PlantUML/SRE/C4.
 
 ## 2) Governance (Bắt buộc đọc)

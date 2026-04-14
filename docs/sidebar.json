@@ -3,7 +3,7 @@
     "label": "Get started",
     "items": [
       { "label": "Overview", "slug": "docs" },
-      { "label": "System detail", "slug": "MO_TA_CHI_TIET_HE_THONG_TAI_LIEU_VI" },
+      { "label": "System detail", "slug": "description" },
       { "label": "Benchmark", "slug": "docs/benchmark-skill-sources" }
     ]
   },
