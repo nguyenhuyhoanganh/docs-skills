@@ -1,0 +1,31 @@
+﻿#!/usr/bin/env bash
+# Cline TaskStart hook (macOS/Linux)
+
+set -euo pipefail
+
+cat >/dev/null || true
+
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+PROJECT_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
+SKILL_PATH="${PROJECT_ROOT}/.cline/skills/using-doc-superpowers/SKILL.md"
+
+if [ ! -f "$SKILL_PATH" ]; then
+  printf '{"cancel":false}\n'
+  exit 0
+fi
+
+SKILL_CONTENT="$(cat "$SKILL_PATH")"
+CONTEXT="<EXTREMELY_IMPORTANT>
+You are in document-superpowers mode.
+
+Below is the full content of your 'using-doc-superpowers' skill - your bootstrap for controlled documentation workflows.
+
+${SKILL_CONTENT}
+</EXTREMELY_IMPORTANT>"
+
+ESCAPED="$(printf '%s' "$CONTEXT" \
+  | sed 's/\\/\\\\/g' \
+  | sed 's/"/\\"/g' \
+  | sed ':a;N;$!ba;s/\n/\\n/g')"
+
+printf '{"cancel":false,"contextModification":"%s"}\n' "$ESCAPED"
