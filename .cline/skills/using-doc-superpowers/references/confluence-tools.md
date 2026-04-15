@@ -36,7 +36,7 @@ Every authored or updated page must include:
 - `status`: one of `draft`, `in-review`, `approved`, `published`, `deprecated`, `archived`
 - `version`: semantic or monotonic integer version
 - `review_date`: ISO date for next review
-- `traceability_ref`: link or key to RTM artifact
+- `traceability_ref`: link or key to RTM artifact (or inline reference key for core-4 scope without dedicated traceability page)
 
 ## Discovery Protocol (Mandatory)
 

@@ -16,10 +16,11 @@ If a phase-specific skill applies, you do not have a choice. Use it.
 ## Instruction Priority
 
 1. User explicit instructions
-2. `CLINE.md`
-3. `.clinerules/*`
-4. Skills in `.cline/skills`
-5. Default system behavior
+2. `.clinerules/superpowers.md`
+3. This skill (`using-doc-superpowers`) as workflow bootstrap
+4. `.clinerules/workflows/*`
+5. Other skills in `.cline/skills`
+6. Default system behavior
 
 ## Mission
 
@@ -28,6 +29,39 @@ Produce enterprise documentation with explicit discovery evidence, gates, and tr
 No ad-hoc writing.
 No out-of-order architecture/design drafting.
 No publish without gate evidence.
+Default new-feature authoring scope is core-4: `feature-brief -> requirements -> hld -> dld`.
+Optional artifacts (API/Ops/Security/Traceability/Release-readiness/ADR) are added only when requested or scope requires.
+
+## Runtime Rule Source
+
+- Single rule source is `.clinerules/superpowers.md`.
+- This skill executes workflow logic under that rule source.
+- Avoid duplicating policy in mirror documents.
+
+## Runtime Boundary
+
+- Runtime instruction surface: `.cline/*` and `.clinerules/*`.
+- Root/docs markdown files are user-facing reference material unless explicitly pulled in by a runtime rule or user request.
+
+## Template Reference Policy
+
+Before any authoring phase, consult the matching local template in this skill's `references/*`.
+
+Templates are reference-only:
+
+- Use them as structure/checklist guidance.
+- Adapt sections to the actual feature scope.
+- Do not copy unresolved placeholders (`TBD`, `TODO`) into final documents.
+
+Template mapping:
+
+- `doc-feature-intake` -> `references/feature-brief.template.md`
+- `doc-requirements-authoring` -> `references/requirements.template.md`
+- `doc-hld-authoring` -> `references/hld.template.md`
+- `doc-dld-authoring` -> `references/dld.template.md`
+- `doc-api-spec-authoring` -> `references/api-spec.template.md`
+- `doc-ops-reliability-security` -> `references/ops-runbook.template.md`, `references/security-model.template.md`
+- `doc-traceability-and-gates` -> `references/traceability.template.md`
 
 ## Agent Execution Topology (Capability Contract)
 
@@ -101,7 +135,7 @@ digraph workflow_router {
     "Context discovery done?" -> "doc-context-discovery" [label="no"];
     "Context discovery done?" -> "New feature docs?" [label="yes"];
 
-    "New feature docs?" -> "Full pipeline: intake -> requirements -> HLD -> DLD -> API -> ops/security -> traceability -> publish" [label="yes"];
+    "New feature docs?" -> "Default pipeline: intake -> requirements -> HLD -> DLD" [label="yes"];
     "New feature docs?" -> "Code change update?" [label="no"];
     "Code change update?" -> "Workflow: update-doc-from-code-change" [label="yes"];
     "Code change update?" -> "Legacy/backfill?" [label="no"];
@@ -126,7 +160,7 @@ digraph workflow_router {
 - "This is small, skip discovery"
 - "Create a new page quickly, no need to search"
 - "Publish now, review later"
-- "Security/ops can be added after release"
+- "Security/ops are in scope but can be added after release"
 
 All are failures. Return to the correct phase skill.
 
@@ -142,9 +176,9 @@ Read before any Confluence operation:
 - Requirements: `doc-requirements-authoring`
 - HLD: `doc-hld-authoring`
 - DLD: `doc-dld-authoring`
-- API/Event contracts: `doc-api-spec-authoring`
-- Ops/Reliability/Security: `doc-ops-reliability-security`
+- API/Event contracts (optional): `doc-api-spec-authoring`
+- Ops/Reliability/Security (optional): `doc-ops-reliability-security`
 - Diagram authoring: `doc-diagrams-as-code`
-- Gate verification: `doc-traceability-and-gates`
+- Gate verification (optional governance): `doc-traceability-and-gates`
 - Publish/update: `doc-confluence-publishing`
 - Lifecycle maintenance: `doc-lifecycle-management`

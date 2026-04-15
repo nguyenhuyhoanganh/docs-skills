@@ -13,6 +13,12 @@ Convert intake into testable requirements.
 No HLD or DLD writing until requirements are complete and approved.
 </HARD-GATE>
 
+## Template Reference (Required, Reference-Only)
+
+- Consult `references/requirements.template.md` before drafting or updating requirements.
+- Use the template as structure guidance only; adapt to actual scope.
+- Do not keep unresolved placeholders in final content.
+
 ## Required Requirement Model
 
 For each requirement, include:

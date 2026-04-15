@@ -1,0 +1,19 @@
+﻿{
+  "publish_mode": "LOCAL_FALLBACK",
+  "generated_at": "<ISO_DATETIME>",
+  "missing_capabilities": [],
+  "pages": [
+    {
+      "replay_order": 1,
+      "title": "<PAGE_TITLE>",
+      "parent_ref": "<PARENT_REF>",
+      "doc_type": "<DOC_TYPE>",
+      "owner": "<OWNER>",
+      "status_transition": ["draft", "in-review", "approved", "published"],
+      "version": "<VERSION>",
+      "review_date": "<YYYY-MM-DD>",
+      "traceability_ref": "<TRACEABILITY_REF>",
+      "source_artifact": "<PATH_TO_SOURCE_ARTIFACT>"
+    }
+  ]
+}

@@ -14,6 +14,12 @@ Do not start requirements authoring until intake is complete.
 Do not start intake authoring until context discovery report exists.
 </HARD-GATE>
 
+## Template Reference (Required, Reference-Only)
+
+- Consult `references/feature-brief.template.md` before drafting or updating the feature brief.
+- Use the template as structure guidance only; adapt to feature context.
+- Do not keep empty placeholders in published output.
+
 ## Checklist
 
 1. Load context discovery report

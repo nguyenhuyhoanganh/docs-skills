@@ -17,12 +17,17 @@
     ]
   },
   {
-    "label": "Templates",
+    "label": "Core Templates",
     "items": [
       { "label": "Feature brief", "slug": "docs/templates/feature-brief.template" },
       { "label": "Requirements", "slug": "docs/templates/requirements.template" },
       { "label": "HLD", "slug": "docs/templates/hld.template" },
-      { "label": "DLD", "slug": "docs/templates/dld.template" },
+      { "label": "DLD", "slug": "docs/templates/dld.template" }
+    ]
+  },
+  {
+    "label": "Optional Templates",
+    "items": [
       { "label": "API spec", "slug": "docs/templates/api-spec.template" },
       { "label": "Ops runbook", "slug": "docs/templates/ops-runbook.template" },
       { "label": "Security model", "slug": "docs/templates/security-model.template" },

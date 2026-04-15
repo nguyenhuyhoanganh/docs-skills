@@ -53,6 +53,11 @@ digraph lifecycle_loop {
 - Detect duplicate or conflicting pages
 - Detect low-confidence ownership/status metadata
 
+## Template Reference (Reference-Only for Major Rewrites)
+
+- When a lifecycle update is effectively a major rewrite, consult the matching local `references/*.template.md` for that `doc_type`.
+- Use templates as structure guidance only; do not force unnecessary sections for minor updates.
+
 ## Change Policy
 
 - Minor change: metadata + content update in place

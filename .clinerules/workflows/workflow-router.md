@@ -6,7 +6,8 @@ Then:
 
 1. Run `discover-context` first.
 2. Pick workflow by request type:
-   - new feature -> `intake-feature` + full feature pipeline
+   - new feature -> `intake-feature` + core-4 pipeline (`write-requirements` -> `write-hld` -> `write-dld`)
+   - optional extension docs (API/Ops/Security/Traceability/Release-readiness/ADR) -> run only when explicitly requested or scope requires
    - code change update -> `update-doc-from-code-change`
    - legacy docs backfill -> `backfill-doc-from-codebase`
    - reverse-engineer feature from existing implementation -> `reverse-engineer-feature-docs`
@@ -16,7 +17,7 @@ Then:
 3. Apply execution topology from `using-doc-superpowers` capability contract:
    - `research` steps may be delegated to `subagent-research` when available.
    - `authoring`, `governance`, and `publish` steps remain on `main-agent` at capability level `R0`.
-4. Continue with traceability gate and publish workflow if needed.
+4. Continue with required gates for current scope and publish workflow if needed.
 
 ## Future Capability Reserved Logic
 

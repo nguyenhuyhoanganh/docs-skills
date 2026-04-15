@@ -13,6 +13,12 @@ Create deployment-grade operational and security documentation.
 No release-ready claim without this phase complete.
 </HARD-GATE>
 
+## Template Reference (Required, Reference-Only)
+
+- Consult `references/ops-runbook.template.md` and `references/security-model.template.md` before drafting or updating ops/security docs.
+- Use templates as structure guidance only; adapt to actual operational/security scope.
+- Do not keep unresolved placeholders in final content.
+
 ## Required Reliability Sections
 
 - SLI definitions

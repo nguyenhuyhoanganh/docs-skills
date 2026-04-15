@@ -1,0 +1,10 @@
+﻿{
+  "tasks": [
+    {
+      "page_ref": "<PAGE_KEY_OR_TITLE>",
+      "reviewers": ["<REVIEWER_1>", "<REVIEWER_2>"],
+      "due_date": "<YYYY-MM-DD>",
+      "after_upsert": true
+    }
+  ]
+}

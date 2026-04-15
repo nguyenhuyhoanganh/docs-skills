@@ -1,77 +1,75 @@
-﻿# Mô tả hệ thống doc-management
+# Mo ta he thong doc-management
 
-## Phạm vi đã tổng hợp
-- Nguồn: toàn bộ `C:\Users\Admin\Desktop\workspace\doc-management` (skills, workflows, governance, templates, hooks, changelog).
-- Trọng tâm: catalog skill, catalog workflow, ma trận skill-workflow, và các lưu ý vận hành quan trọng.
+## Pham vi da tong hop
 
-## 1. Catalog chi tiết từng skill
+- Nguon: toan bo `C:\Users\Admin\Desktop\workspace\doc-management` (skills, workflows, governance, templates, hooks, changelog).
+- Trong tam: mo hinh van hanh mac dinh core-4 docs va cac nhanh optional theo yeu cau.
 
-| Skill | Làm gì | Khi nào gọi | Input tối thiểu | Output bắt buộc | Gate quan trọng |
-|---|---|---|---|---|---|
-| `using-doc-superpowers` | Bootstrap quy trình tài liệu theo chuẩn enterprise: discovery-first, route workflow đúng family, kiểm soát publish governance, và quản trị topology `main-agent/subagent` theo capability level. | Ngay khi bắt đầu mọi yêu cầu create/update tài liệu trong repo này. | Yêu cầu người dùng (loại việc cần làm). | Quyết định routing workflow + thứ tự phase skill cần dùng + capability contract (`R0..R3`, reserved toggles). | Không được bỏ `doc-context-discovery`; không viết out-of-order; không publish khi chưa qua gate; ở `R0` subagent chỉ research read-only. |
-| `doc-context-discovery` | Khám phá ngữ cảnh từ codebase + Confluence, chấm điểm relevance, quyết định reuse/update/new. | Bắt buộc trước mọi create/update. | User request/change summary + codebase + Confluence space. | Context Discovery Report: keyword set, evidence codebase, evidence Confluence, bảng relevance, quyết định reuse/update/new, missing context list. | HARD-GATE: chưa có discovery report thì không được authoring; nếu toàn low-confidence thì phải xin thêm pointer rồi chạy lại. |
-| `doc-feature-intake` | Chuẩn hóa đầu bài feature thành feature brief rõ boundary/unknown/risk. | Sau discovery, trước requirements. | Discovery report + raw feature request. | Feature brief đầy đủ section: problem, objective, in/out scope, affected components, assumptions/constraints, risks/open questions, requirement themes. | Không viết requirements khi intake chưa xong; intake không được bắt đầu nếu thiếu discovery report. |
-| `doc-requirements-authoring` | Chuyển feature brief thành requirements có thể kiểm chứng (FR/NFR, acceptance criteria, metric). | Sau intake, trước HLD/DLD. | Feature brief + discovery evidence. | Requirements spec có `REQ-ID`, priority, rationale, Given/When/Then, verification method, owner; FR/NFR/constraints/KPI/risk. | Không viết HLD/DLD khi requirements chưa complete/approved; FR phải có acceptance criteria; NFR phải đo được; không còn TBD/TODO/mâu thuẫn. |
-| `doc-hld-authoring` | Viết thiết kế cấp hệ thống: boundary, component/container, data flow, tradeoff, ADR. | Khi requirements đã approved. | Approved requirements + kiến trúc baseline + dependency map. | HLD có mapping về `REQ-ID`, tradeoff (kể cả option reject), risk + mitigation direction, ADR link/create. | Không author HLD trên requirements chưa approved; mọi quyết định kiến trúc quan trọng phải có ADR reference. |
-| `doc-dld-authoring` | Viết thiết kế chi tiết cấp module/flow/state/failure handling phục vụ implementation. | Sau HLD. | HLD + requirements đã có. | DLD gồm decomposition, internal contract, sequence/state, data/persistence, validation/error, retry/timeout/idempotency, concurrency, rollback/migration. | Không tự mở rộng scope ngoài requirements/HLD; mỗi section lớn phải map ít nhất 1 `REQ-ID` + 1 section HLD. |
-| `doc-api-spec-authoring` | Đặc tả API/Event contract-first (OpenAPI/AsyncAPI), error semantics, version/compatibility policy. | Khi cần contract chi tiết cho tích hợp. | Requirements + thông tin interface từ HLD/DLD. | API/Event spec có schema, validation, error taxonomy, idempotency/retry, AuthN/AuthZ, rate limit, version/deprecation, breaking-change analysis. | Không publish implementation plan nếu thiếu contract; breaking change bắt buộc impact + migration path + sunset timeline; mọi endpoint/event phải map `REQ-ID`. |
-| `doc-ops-reliability-security` | Viết tài liệu sẵn sàng production: SLI/SLO, runbook, incident playbook, threat model, controls, compliance. | Trước release-ready claim hoặc khi incident/ops/security impacted. | Feature/design context + yêu cầu vận hành/bảo mật. | Ops runbook và/hoặc security model có owner + review date + bước hành động cụ thể. | Không được claim release-ready nếu phase này chưa hoàn tất; cấm câu khẩu hiệu không actionable. |
-| `doc-diagrams-as-code` | Tạo diagram-as-code cho kiến trúc/quy trình (context/container/component/sequence/deployment/dataflow). | Khi doc có phần kiến trúc/quy trình cần minh họa. | Section kiến trúc/quy trình cần vẽ + phạm vi hệ thống. | Diagram source canonical (ưu tiên PlantUML), artifact render (SVG/PNG) khi cần, mapping tới entity trong HLD/DLD. | Mermaid chỉ dùng khi có constraint render/runtime cụ thể và phải ghi rõ lý do fallback. |
-| `doc-traceability-and-gates` | Kiểm tra độ đầy đủ và truy vết end-to-end trước publish. | Trước publish hoặc khi cần quyết định GO/NO-PUBLISH. | Bộ artifacts đã author (requirements/HLD/DLD/API/Ops/Security/Test refs). | Traceability matrix + gate checklist + quyết định `GO-PUBLISH` hoặc `NO-PUBLISH` + blocker list. | HARD-GATE: nếu `NO-PUBLISH` thì tuyệt đối không publish. |
-| `doc-confluence-publishing` | Publish/update Confluence có kiểm soát metadata, hierarchy, review task, versioning, và preflight MCP bắt buộc. | Chỉ sau khi gate traceability pass. | Bộ tài liệu đã approved + metadata tối thiểu + traceability ref + trạng thái khả dụng của `ConfluenceDocOps`. | Nếu MCP sẵn sàng: upsert/publish đầy đủ; nếu MCP thiếu: tạo fallback bundle cục bộ (`manifest.json`, `review-tasks.json`, `change-summary.md`) để replay sau. | Không publish nếu chưa qua traceability; cấm chuyển trực tiếp `draft -> published`; archive cần replacement + approval token; thiếu MCP thì trạng thái phải là `BLOCKED_MCP_UNAVAILABLE`. |
-| `doc-lifecycle-management` | Duy trì tài liệu theo vòng đời: phát hiện stale, cập nhật, deprecate/archive có kiểm soát. | Khi update docs theo code change, refresh định kỳ, incident follow-up, hoặc dọn stale docs. | Trang tài liệu hiện có + review_date + tín hiệu thay đổi từ code/contracts/runbook. | Quyết định update/version/deprecate/archive + metadata/owner/review_date mới + ghi chú thay đổi. | Trước mọi update/archive phải chạy discovery/relevance check; không archive nếu thiếu successor ref + approval token + communication note. |
+## 1) Luong mac dinh cho feature moi (core-4)
 
-## 2. Catalog chi tiết từng workflow
+1. `doc-context-discovery`
+2. `doc-feature-intake` -> tao `feature-brief`
+3. `doc-requirements-authoring` -> tao `requirements`
+4. `doc-hld-authoring` -> tao `hld`
+5. `doc-dld-authoring` -> tao `dld`
+6. Chay gate bat buoc theo scope (`G0 -> G1 -> G2 -> G3`)
+7. Neu co yeu cau publish thi chay `publish-confluence` voi `G7`
 
-| Workflow | Mục tiêu | Skill gọi (thứ tự) | Đầu ra chính | Khi kết thúc workflow |
-|---|---|---|---|---|
-| `workflow-router` | Chọn đúng workflow family cho yêu cầu tài liệu và gán execution role theo capability contract. | `using-doc-superpowers` -> `discover-context` -> chọn workflow đích -> apply topology (`research` có thể subagent, `authoring/governance/publish` mặc định main-agent ở `R0`) -> `traceability-check`/`publish-confluence` (khi cần). | Quyết định tuyến xử lý rõ ràng theo loại yêu cầu + role assignment theo capability level. | Khi đã route đúng family, gán role xong cho từng nhóm bước, và xác định bước tiếp theo có/không publish. |
-| `discover-context` | Thu thập evidence và quyết định reuse/update/new. | `doc-context-discovery`. | Context Discovery Report. | Khi có relevance scoring + quyết định xử lý + (nếu low confidence) đã xin pointer và rerun. |
-| `intake-feature` | Chuẩn hóa feature request trước requirements. | `doc-context-discovery` -> `doc-feature-intake`. | Feature brief chuẩn hóa. | Khi objective/scope/unknown rõ đủ để chuyển sang requirements. |
-| `write-requirements` | Tạo requirements testable, measurable. | `doc-requirements-authoring`. | Requirements doc (FR/NFR/constraints/acceptance criteria). | Khi requirements đạt gate chất lượng và sẵn sàng handoff cho HLD. |
-| `write-hld` | Tạo kiến trúc cấp cao và rationale. | `doc-hld-authoring`. | HLD + ADR linkage/tradeoff. | Khi boundary, integration, tradeoff, requirement mapping đã rõ. |
-| `write-dld` | Tạo thiết kế chi tiết cấp module/flow. | `doc-dld-authoring`. | DLD chi tiết có mapping HLD + requirements. | Khi behavior/state/failure/recovery được mô tả đủ cho implementation. |
-| `write-api-spec` | Chuẩn hóa contract API/Event và compatibility policy. | `doc-api-spec-authoring`. | API/Event spec (schema + error model + versioning/deprecation). | Khi endpoint/event map đủ về `REQ-ID` và policy tương thích rõ. |
-| `write-ops-and-security` | Hoàn thiện readiness vận hành và bảo mật. | `doc-ops-reliability-security`. | Ops runbook + security documentation. | Khi có SLI/SLO, runbook, escalation, controls, compliance impact rõ. |
-| `diagram-docs` | Sinh diagram-as-code chuẩn để hỗ trợ tài liệu kiến trúc/quy trình. | `doc-diagrams-as-code`. | Bộ diagram source + artifact render. | Khi diagram đạt chuẩn label/scope/mapping và đã attach vào doc mục tiêu. |
-| `traceability-check` | Chặn publish nếu thiếu truy vết/gate. | `doc-traceability-and-gates`. | Traceability matrix + GO/NO-PUBLISH. | Khi tất cả gate pass hoặc đã có danh sách blocker NO-PUBLISH rõ ràng. |
-| `publish-confluence` | Publish/update tài liệu lên Confluence có governance đầy đủ, kèm cơ chế degrade an toàn khi thiếu MCP. | `doc-confluence-publishing` (preflight `PUBLISH_MODE` trước mọi thao tác). | Nhánh remote: trang đã publish/upsert + metadata + review task + version log. Nhánh fallback: publish bundle cục bộ + blocked state rõ ràng. | Khi hoặc đã publish thành công qua remote mode, hoặc đã tạo fallback bundle đầy đủ với trạng thái `BLOCKED_MCP_UNAVAILABLE`. |
-| `update-existing-docs` | Cập nhật tài liệu hiện có theo lifecycle policy. | `doc-context-discovery` -> `doc-lifecycle-management`. | Bản cập nhật/in-place hoặc versioned/deprecate/archive decision. | Khi metadata/owner/review_date đã đồng bộ theo quyết định lifecycle. |
-| `update-doc-from-code-change` | Đồng bộ docs theo thay đổi code/diff. | `doc-context-discovery` -> `doc-lifecycle-management` -> `doc-traceability-and-gates` (nếu contract/architecture đổi). | Delta update có version bump + change summary. | Khi các trang impacted đã cập nhật và gate liên quan đã chạy lại. |
-| `periodic-doc-refresh` | Làm mới docs quá hạn review_date. | `doc-context-discovery` -> `doc-lifecycle-management`. | Danh sách trang được update/deprecate/archive + owner/review_date mới. | Khi vòng review định kỳ hoàn tất theo policy lifecycle. |
-| `incident-driven-doc-update` | Cập nhật docs sau sự cố để giảm lặp lại lỗi. | `doc-context-discovery` -> `doc-ops-reliability-security` -> `doc-lifecycle-management`. | Runbook/escalation/reliability controls cập nhật + incident reference metadata. | Khi tài liệu impacted theo incident đã cập nhật và republish hợp lệ. |
-| `create-doc-from-existing-assets` | Tổng hợp tài liệu mới từ codebase + Confluence assets có sẵn. | `doc-context-discovery` -> `[authoring skill phù hợp]` -> `doc-diagrams-as-code` (khi cần) -> `doc-traceability-and-gates`. | Tài liệu mục tiêu có source mapping rõ, tránh duplicate. | Khi synthesis hoàn tất và traceability gate pass trước publish. |
-| `backfill-doc-from-codebase` | Dựng baseline docs cho hệ thống legacy/chưa có docs đầy đủ. | `doc-context-discovery` -> `[requirements/hld/dld/api/ops skill theo phạm vi]` -> `doc-diagrams-as-code` -> verify consistency với code. | Bộ docs baseline + giả định còn thiếu evidence được đánh dấu rõ. | Khi docs đã được đối chiếu với code và publish ở trạng thái `draft` kèm review task. |
-| `reverse-engineer-feature-docs` | Reverse-engineer tài liệu feature từ implementation hiện hữu theo từng đơn vị. | `doc-context-discovery` -> `[phase authoring skills]` -> `doc-diagrams-as-code` -> `doc-traceability-and-gates` -> `publish-confluence` (nếu pass). | Bộ docs theo unit + kết quả verify/review vòng lặp + artifact traceability tổng hợp. | Khi từng unit đạt ngưỡng consistency hoặc đã escalate mandatory human review theo gate G8. |
+Core-4 la luong mac dinh. Khong tu dong mo rong sang API/Ops/Security/Traceability neu chua co yeu cau.
 
-## 3. Ma trận nhanh: workflow nào gọi skill nào
+## 2) Artifact optional (chi tao khi duoc yeu cau hoac scope bat buoc)
 
-| Skill | Các workflow thường gọi |
-|---|---|
-| `using-doc-superpowers` | `workflow-router` (entrypoint), toàn bộ luồng create/update gián tiếp qua router. |
-| `doc-context-discovery` | `discover-context`, `intake-feature`, `update-existing-docs`, `update-doc-from-code-change`, `periodic-doc-refresh`, `incident-driven-doc-update`, `create-doc-from-existing-assets`, `backfill-doc-from-codebase`, `reverse-engineer-feature-docs`, `workflow-router` (step đầu). |
-| `doc-feature-intake` | `intake-feature` (và full new-feature pipeline). |
-| `doc-requirements-authoring` | `write-requirements`, `backfill-doc-from-codebase`, `reverse-engineer-feature-docs`. |
-| `doc-hld-authoring` | `write-hld`, `backfill-doc-from-codebase`, `reverse-engineer-feature-docs`. |
-| `doc-dld-authoring` | `write-dld`, `backfill-doc-from-codebase`, `reverse-engineer-feature-docs`. |
-| `doc-api-spec-authoring` | `write-api-spec`, `backfill-doc-from-codebase`, `reverse-engineer-feature-docs`. |
-| `doc-ops-reliability-security` | `write-ops-and-security`, `incident-driven-doc-update`, `backfill-doc-from-codebase`, `reverse-engineer-feature-docs`. |
-| `doc-diagrams-as-code` | `diagram-docs`, `create-doc-from-existing-assets`, `backfill-doc-from-codebase`, `reverse-engineer-feature-docs` (và các luồng có section kiến trúc/quy trình). |
-| `doc-traceability-and-gates` | `traceability-check`, `create-doc-from-existing-assets`, `update-doc-from-code-change` (khi impact kiến trúc/contract), `reverse-engineer-feature-docs`, `workflow-router` (trước publish). |
-| `doc-confluence-publishing` | `publish-confluence`, `reverse-engineer-feature-docs` (sau gate pass), `backfill-doc-from-codebase` (publish draft + review tasks). |
-| `doc-lifecycle-management` | `update-existing-docs`, `update-doc-from-code-change`, `periodic-doc-refresh`, `incident-driven-doc-update`. |
+| Artifact | Skill/Workflow | Khi nao bat dau |
+|---|---|---|
+| `api-spec` | `doc-api-spec-authoring` / `write-api-spec` | Co thay doi hoac yeu cau contract API/Event |
+| `ops-runbook` | `doc-ops-reliability-security` / `write-ops-and-security` | Co nhu cau van hanh, release, incident readiness |
+| `security-model` | `doc-ops-reliability-security` / `write-ops-and-security` | Co yeu cau security/compliance |
+| `traceability` | `doc-traceability-and-gates` / `traceability-check` | Can governance artifact rieng hoac review gate chuyen sau |
+| `release-readiness` | theo template + gate | Can checklist release formal |
+| `adr` | theo template + HLD tradeoff | Co quyet dinh kien truc can ghi nhan |
 
-## 4. Điểm hay và lưu ý quan trọng ở doc-management
+## 3) Catalog workflow (tom tat)
 
-- Điểm mạnh lớn nhất là kỷ luật `discovery-first`: mọi create/update đều bị chặn nếu chưa có evidence từ codebase + Confluence.
-- Hệ thống gate rất rõ theo pha (`G0..G8`), đặc biệt có `G8` riêng cho reverse-engineering với ngưỡng `consistencyScore >= 70` và tối đa 2 vòng revise.
-- Chuẩn metadata được áp xuyên suốt (kể cả template, publish, lifecycle): `doc_type`, `owner`, `status`, `version`, `review_date`, `traceability_ref`.
-- Luồng trạng thái tài liệu được quản trị chặt (`draft -> in-review -> approved -> published -> deprecated -> archived`), giảm rủi ro publish tắt.
-- PlantUML-first được chuẩn hóa rõ (kèm mẫu C4/Sequence); Mermaid chỉ fallback khi có constraint và phải ghi lý do.
-- Repo ưu tiên `update-in-place` để chống duplicate/drift và yêu cầu map traceability từ `REQ-ID` đến downstream artifact.
-- Có hook bootstrap (`.clinerules/hooks/TaskStart(.ps1)`) tự inject `using-doc-superpowers` vào context, giảm nguy cơ chạy sai quy trình.
-- Template library khá đầy đủ cho SDLC docs (feature brief, requirements, HLD, DLD, API, ops, security, traceability, release readiness, ADR).
-- Đã bổ sung capability contract cho execution topology để future-proof với cập nhật subagent (`SUBAGENT_CAPABILITY_LEVEL=R0..R3`, reserved toggles), tránh phải viết lại workflow khi nền tảng nâng cấp.
-- `docs/index.md` và `docs/sidebar.json` đã được đồng bộ sang `description` để loại bỏ tham chiếu link chết cũ.
-- Lưu ý vận hành: kỹ năng publish giả định có MCP namespace `ConfluenceDocOps.*`; nếu môi trường không có connector này thì các workflow publish cần fallback chiến lược khác.
-- Fallback publish hiện đã được chuẩn hóa bằng bundle cục bộ có cấu trúc để replay (`manifest.json`, `review-tasks.json`, `change-summary.md`) thay vì dừng mơ hồ.
+- `workflow-router`: route yeu cau vao dung workflow family.
+- `discover-context`: bat buoc truoc moi create/update.
+- `intake-feature`: chuan hoa feature brief.
+- `write-requirements`, `write-hld`, `write-dld`: chuoi core-4.
+- `write-api-spec`, `write-ops-and-security`, `traceability-check`: nhanh optional.
+- `publish-confluence`: publish co preflight MCP + governance.
+- `update-doc-from-code-change`, `update-existing-docs`, `periodic-doc-refresh`, `incident-driven-doc-update`: cac luong bao tri.
+- `backfill-doc-from-codebase`, `reverse-engineer-feature-docs`, `create-doc-from-existing-assets`: luong tong hop/legacy/reverse-engineering.
+
+## 4) Gate ap dung theo scope
+
+- Bat buoc core flow: `G0`, `G1`, `G2`, `G3`
+- Conditional:
+  - `G4` khi co `api-spec`
+  - `G5` khi co `ops-runbook`/`security-model`
+  - `G6` khi co traceability/governance artifact rieng
+  - `G7` khi publish/update Confluence
+  - `G8` cho reverse-engineering/backfill
+
+## 5) Template scope
+
+Core templates:
+
+- `docs/templates/feature-brief.template.md`
+- `docs/templates/requirements.template.md`
+- `docs/templates/hld.template.md`
+- `docs/templates/dld.template.md`
+
+Optional templates:
+
+- `docs/templates/api-spec.template.md`
+- `docs/templates/ops-runbook.template.md`
+- `docs/templates/security-model.template.md`
+- `docs/templates/traceability.template.md`
+- `docs/templates/release-readiness.template.md`
+- `docs/templates/adr.template.md`
+
+## 6) Luu y van hanh quan trong
+
+- Van giu nguyen nguyen tac discovery-first.
+- Van giu nguyen metadata schema khi publish (`doc_type`, `owner`, `status`, `version`, `review_date`, `traceability_ref`).
+- `traceability_ref` co the la link trang traceability rieng hoac inline reference key trong core-4 mode.
+- PlantUML van la mac dinh cho diagram-as-code; Mermaid chi fallback khi co ly do ro rang.

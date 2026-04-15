@@ -31,11 +31,14 @@ Bắt buộc thay bằng dạng đo được:
 
 ## 4) Chuẩn nội dung theo artifact
 
-- Requirements: có `REQ-ID`, rationale, priority, acceptance criteria, verification method, owner.
-- HLD: boundary, component map, data flow, tradeoff, ADR linkage.
-- DLD: module behavior, state/sequence, failure/recovery, concurrency notes.
-- API spec: schema, error model, idempotency, versioning, deprecation policy.
-- Ops/Security: SLI/SLO, runbook, escalation, threat model, control mapping.
+- Core mặc định:
+  - Requirements: có `REQ-ID`, rationale, priority, acceptance criteria, verification method, owner.
+  - HLD: boundary, component map, data flow, tradeoff, ADR linkage.
+  - DLD: module behavior, state/sequence, failure/recovery, concurrency notes.
+- Optional theo yêu cầu:
+  - API spec: schema, error model, idempotency, versioning, deprecation policy.
+  - Ops/Security: SLI/SLO, runbook, escalation, threat model, control mapping.
+  - Traceability/Release readiness/ADR khi cần governance hoặc review artifact chuyên biệt.
 
 ## 5) Diagram standard
 
@@ -46,9 +49,10 @@ Bắt buộc thay bằng dạng đo được:
 
 ## 6) Linking và traceability
 
-- Mọi requirement phải link được tới HLD/DLD/API/Ops/Test.
+- Mọi requirement phải link được tới HLD/DLD.
+- Nếu có API/Ops/Test artifact trong scope thì phải bổ sung link tương ứng.
 - Mọi quyết định kiến trúc lớn phải có ADR reference.
-- Mọi trang xuất bản phải có `traceability_ref`.
+- Mọi trang xuất bản phải có `traceability_ref` (có thể là ref inline khi không có trang traceability riêng).
 
 ## 7) Nguyên tắc chống drift
 

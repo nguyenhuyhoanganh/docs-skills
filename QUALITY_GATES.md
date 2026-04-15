@@ -1,133 +1,145 @@
-﻿# QUALITY_GATES
+# QUALITY_GATES
 
-Tài liệu này định nghĩa gate chất lượng cho pipeline tài liệu phát triển phần mềm.
+Tai lieu nay dinh nghia gate chat luong cho pipeline tai lieu phat trien phan mem.
 
-## G0 - Discovery Gate (bắt buộc trước authoring)
+## Mo hinh ap dung gate
 
-Pass khi:
+- Luong mac dinh (core-4 docs) bat buoc: `G0 -> G1 -> G2 -> G3`.
+- Gate mo rong theo scope:
+  - `G4` khi co `api-spec`.
+  - `G5` khi co `ops-runbook` hoac `security-model`.
+  - `G6` khi co traceability/governance artifact rieng.
+  - `G7` khi co publish/update Confluence.
+  - `G8` cho reverse-engineering/backfill tu code hien huu.
 
-- Có keyword set phù hợp domain.
-- Có bằng chứng từ codebase.
-- Có bằng chứng từ Confluence keyword + semantic search.
-- Có quyết định rõ `reuse/update/new`.
-
-Fail nếu:
-
-- Chưa đọc candidate pages liên quan.
-- Tạo trang mới khi chưa loại trừ trùng lặp.
-
-## G1 - Requirements Gate
+## G0 - Discovery Gate (bat buoc truoc authoring)
 
 Pass khi:
 
-- Mỗi requirement có `REQ-ID`.
-- FR có acceptance criteria rõ.
-- NFR có ngưỡng đo cụ thể.
-- Không còn placeholder/mâu thuẫn.
+- Co keyword set phu hop domain.
+- Co bang chung tu codebase.
+- Co bang chung tu Confluence keyword + semantic search.
+- Co quyet dinh ro `reuse/update/new`.
 
-Fail nếu:
+Fail neu:
 
-- Có câu mơ hồ không test được.
-- Không rõ owner hoặc verification method.
+- Chua doc candidate pages lien quan.
+- Tao trang moi khi chua loai tru trung lap.
 
-## G2 - HLD Gate
-
-Pass khi:
-
-- Có boundary và component/container rõ.
-- Có data flow và integration points.
-- Có tradeoff và ADR linkage.
-- Mapping về requirements rõ.
-
-Fail nếu:
-
-- HLD không trace về `REQ-ID`.
-- Thiếu quyết định/rationale cho điểm kiến trúc quan trọng.
-
-## G3 - DLD Gate
+## G1 - Requirements Gate (bat buoc cho core flow)
 
 Pass khi:
 
-- Có module decomposition.
-- Có sequence/state/failure handling.
-- Có timeout/retry/idempotency khi cần.
-- Mapping tới HLD + requirements.
+- Moi requirement co `REQ-ID`.
+- FR co acceptance criteria ro.
+- NFR co nguong do cu the.
+- Khong con placeholder/mau thuan.
 
-Fail nếu:
+Fail neu:
 
-- Thiếu mô tả behavior trong lỗi/edge cases.
-- Scope vượt requirements/HLD.
+- Co cau mo ho khong test duoc.
+- Khong ro owner hoac verification method.
 
-## G4 - API/Event Contract Gate
-
-Pass khi:
-
-- Schema request/response/event đầy đủ.
-- Có error taxonomy.
-- Có versioning + compatibility policy.
-- Mọi endpoint/event map về `REQ-ID`.
-
-Fail nếu:
-
-- Contract thiếu owner/version.
-- Breaking change không có migration plan.
-
-## G5 - Ops/Security Gate
+## G2 - HLD Gate (bat buoc cho core flow)
 
 Pass khi:
 
-- Có SLI/SLO + error budget action.
-- Có runbook + escalation.
-- Có threat model + security controls.
-- Có release/rollback readiness.
+- Co boundary va component/container ro.
+- Co data flow va integration points.
+- Co tradeoff va ADR linkage.
+- Mapping ve requirements ro.
 
-Fail nếu:
+Fail neu:
 
-- Chỉ có policy slogan, không có thao tác vận hành cụ thể.
+- HLD khong trace ve `REQ-ID`.
+- Thieu quyet dinh/rationale cho diem kien truc quan trong.
 
-## G6 - Traceability Gate
-
-Pass khi:
-
-- Có matrix `REQ-ID -> HLD -> DLD -> API/Event -> Ops/Security -> Test`.
-- Không còn contradiction.
-- Rủi ro mở được ghi nhận và chấp nhận rõ.
-
-Fail nếu:
-
-- Bất kỳ requirement nào thiếu downstream artifact.
-
-## G7 - Publish Governance Gate
+## G3 - DLD Gate (bat buoc cho core flow)
 
 Pass khi:
 
-- Metadata page đầy đủ (`doc_type`, `owner`, `status`, `version`, `review_date`, `traceability_ref`).
-- Status transition hợp lệ (`draft -> in-review -> approved -> published`).
-- Có reviewer assignment + due date.
+- Co module decomposition.
+- Co sequence/state/failure handling.
+- Co timeout/retry/idempotency khi can.
+- Mapping toi HLD + requirements.
 
-Fail nếu:
+Fail neu:
 
-- Publish khi chưa `GO-PUBLISH`.
-- Thiếu metadata hoặc review task.
+- Thieu mo ta behavior trong loi/edge cases.
+- Scope vuot requirements/HLD.
 
-## G8 - Reverse-Engineering Consistency Gate (khi dựng doc từ code hiện hữu)
-
-Áp dụng cho các luồng: `backfill-doc-from-codebase`, `reverse-engineer-feature-docs`.
+## G4 - API/Event Contract Gate (chi khi `api-spec` nam trong scope)
 
 Pass khi:
 
-- Có verification evidence độc lập giữa tài liệu sinh ra và code hiện trạng.
-- `consistencyScore >= 70` cho mỗi artifact chính (requirements/HLD/DLD/API hoặc Design Doc đơn vị).
-- Các discrepancy `critical` và `major` đã được xử lý hoặc có lý do chấp nhận rõ.
-- Không vượt quá 2 vòng revise cho cùng một unit/artifact.
+- Schema request/response/event day du.
+- Co error taxonomy.
+- Co versioning + compatibility policy.
+- Moi endpoint/event map ve `REQ-ID`.
 
-Fail nếu:
+Fail neu:
 
-- `consistencyScore < 70` nhưng chưa revise theo kết quả verification.
-- Còn discrepancy `critical` chưa xử lý.
-- Đã vượt 2 vòng revise mà vẫn chưa đạt tiêu chí.
+- Contract thieu owner/version.
+- Breaking change khong co migration plan.
 
-Mandatory human review nếu:
+## G5 - Ops/Security Gate (chi khi ops/security nam trong scope)
 
-- `consistencyScore < 50` cho bất kỳ artifact/unit nào, hoặc
-- Bị reject sau 2 revision cycles.
+Pass khi:
+
+- Co SLI/SLO + error budget action.
+- Co runbook + escalation.
+- Co threat model + security controls.
+- Co release/rollback readiness cho pham vi van hanh.
+
+Fail neu:
+
+- Chi co policy slogan, khong co thao tac van hanh cu the.
+
+## G6 - Traceability Gate (chi khi traceability/governance artifact duoc yeu cau)
+
+Pass khi:
+
+- Co matrix toi thieu `REQ-ID -> HLD -> DLD`.
+- Neu co API/Event/Ops/Security/Test artifact trong scope thi matrix co link day du toi cac artifact do.
+- Khong con contradiction.
+- Rui ro mo duoc ghi nhan va chap nhan ro.
+
+Fail neu:
+
+- Requirement thieu artifact downstream bat buoc theo pham vi da chon.
+
+## G7 - Publish Governance Gate (chi khi publish/update Confluence)
+
+Pass khi:
+
+- Metadata page day du (`doc_type`, `owner`, `status`, `version`, `review_date`, `traceability_ref`).
+- Status transition hop le (`draft -> in-review -> approved -> published`).
+- Co reviewer assignment + due date.
+- Tat ca gate bat buoc cho pham vi hien tai da pass.
+
+Fail neu:
+
+- Publish khi gate bat buoc cho scope chua pass.
+- Thieu metadata hoac review task.
+
+## G8 - Reverse-Engineering Consistency Gate (khi dung doc tu code hien huu)
+
+Ap dung cho cac luong: `backfill-doc-from-codebase`, `reverse-engineer-feature-docs`.
+
+Pass khi:
+
+- Co verification evidence doc-vs-code doc lap.
+- `consistencyScore >= 70` cho moi artifact chinh trong scope (core-4, va optional artifact neu co).
+- Cac discrepancy `critical` va `major` da duoc xu ly hoac co ly do chap nhan ro.
+- Khong vuot qua 2 vong revise cho cung unit/artifact.
+
+Fail neu:
+
+- `consistencyScore < 70` nhung chua revise theo ket qua verification.
+- Con discrepancy `critical` chua xu ly.
+- Da vuot 2 vong revise ma van chua dat tieu chi.
+
+Mandatory human review neu:
+
+- `consistencyScore < 50` cho bat ky artifact/unit nao, hoac
+- Bi reject sau 2 revision cycles.

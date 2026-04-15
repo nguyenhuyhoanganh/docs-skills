@@ -13,6 +13,12 @@ Produce high-level architecture that can survive cross-team review.
 Do not author HLD against unapproved requirements.
 </HARD-GATE>
 
+## Template Reference (Required, Reference-Only)
+
+- Consult `references/hld.template.md` before drafting or updating HLD.
+- Use the template as structure guidance only; adapt sections to system scope.
+- Do not keep unresolved placeholders in final content.
+
 ## Required Inputs
 
 - Approved requirements page

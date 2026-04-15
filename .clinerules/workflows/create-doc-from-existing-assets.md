@@ -7,4 +7,5 @@ Then:
 1. Gather from codebase + Confluence and avoid duplication.
 2. Synthesize into target doc type with explicit source mapping.
 3. Add PlantUML diagrams where architecture/process is described.
-4. Run traceability gate before publish.
+4. Run required quality gates for selected doc scope before publish.
+5. Run traceability gate only when traceability/governance artifact is in scope.

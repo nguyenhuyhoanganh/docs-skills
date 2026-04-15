@@ -1,6 +1,6 @@
 ﻿---
 name: doc-api-spec-authoring
-description: Use when detailed service contracts are required, including API/event schemas, compatibility policy, and integration error semantics.
+description: Use when detailed service contracts are required on demand, including API/event schemas, compatibility policy, and integration error semantics.
 ---
 
 # API and Event Spec Authoring
@@ -10,8 +10,14 @@ description: Use when detailed service contracts are required, including API/eve
 Define contract-first interfaces for synchronous and asynchronous integration.
 
 <HARD-GATE>
-Do not publish implementation plans without explicit contract documents.
+If API/Event contract scope is in play, do not publish implementation plans without explicit contract documents.
 </HARD-GATE>
+
+## Template Reference (Required, Reference-Only)
+
+- Consult `references/api-spec.template.md` before drafting or updating API/Event specs.
+- Use the template as structure guidance only; adapt fields to real contract scope.
+- Do not keep unresolved placeholders in final content.
 
 ## Required Artifacts
 

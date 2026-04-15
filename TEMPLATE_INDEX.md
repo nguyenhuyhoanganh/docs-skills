@@ -1,29 +1,37 @@
-﻿# TEMPLATE_INDEX
+# TEMPLATE_INDEX
 
-Danh mục template tài liệu cho software development docs.
+Danh muc template tai lieu cho software development docs.
 
 ## 1) Mapping `doc_type` -> template
 
-| `doc_type` | Template | Dùng khi |
-|---|---|---|
-| `feature-brief` | `docs/templates/feature-brief.template.md` | Chuẩn hóa đầu bài feature trước requirements |
-| `requirements` | `docs/templates/requirements.template.md` | Viết FR/NFR/acceptance criteria |
-| `hld` | `docs/templates/hld.template.md` | Thiết kế cấp hệ thống |
-| `dld` | `docs/templates/dld.template.md` | Thiết kế cấp module/flow chi tiết |
-| `api-spec` | `docs/templates/api-spec.template.md` | Đặc tả API/Event contract |
-| `ops-runbook` | `docs/templates/ops-runbook.template.md` | Vận hành, incident, rollback |
-| `security-model` | `docs/templates/security-model.template.md` | Threat model và control mapping |
-| `traceability` | `docs/templates/traceability.template.md` | Matrix truy vết end-to-end |
-| `release-readiness` | `docs/templates/release-readiness.template.md` | Checklist readiness trước release |
-| `adr` | `docs/templates/adr.template.md` | Ghi nhận quyết định kiến trúc |
+| `doc_type` | Template | Scope | Dung khi |
+|---|---|---|---|
+| `feature-brief` | `docs/templates/feature-brief.template.md` | Default | Chuan hoa dau bai feature truoc requirements |
+| `requirements` | `docs/templates/requirements.template.md` | Default | Viet FR/NFR/acceptance criteria |
+| `hld` | `docs/templates/hld.template.md` | Default | Thiet ke cap he thong |
+| `dld` | `docs/templates/dld.template.md` | Default | Thiet ke cap module/flow chi tiet |
+| `api-spec` | `docs/templates/api-spec.template.md` | Optional | Dac ta API/Event contract khi co yeu cau |
+| `ops-runbook` | `docs/templates/ops-runbook.template.md` | Optional | Van hanh, incident, rollback khi can |
+| `security-model` | `docs/templates/security-model.template.md` | Optional | Threat model va control mapping khi can |
+| `traceability` | `docs/templates/traceability.template.md` | Optional | Matrix truy vet end-to-end khi workflow governance yeu cau |
+| `release-readiness` | `docs/templates/release-readiness.template.md` | Optional | Checklist readiness truoc release khi can |
+| `adr` | `docs/templates/adr.template.md` | Optional | Ghi nhan quyet dinh kien truc khi can |
 
-## 2) Quy tắc dùng template
+## 2) Quy tac dung template
 
-1. Không bỏ phần metadata.
-2. Không bỏ section bắt buộc của template.
-3. Nếu section "N/A", phải ghi rõ lý do.
-4. Nếu đổi template, cập nhật lại `TEMPLATE_INDEX.md`.
+1. Khong bo phan metadata.
+2. Khong bo section bat buoc cua template.
+3. Neu section "N/A", phai ghi ro ly do.
+4. Neu doi template, cap nhat lai `TEMPLATE_INDEX.md`.
 
-## 3) Trình tự khuyến nghị
+## 3) Trinh tu khuyen nghi
 
-`feature-brief -> requirements -> hld -> dld -> api-spec -> ops/security -> traceability -> release-readiness -> publish`
+Default (core-4):
+
+`feature-brief -> requirements -> hld -> dld`
+
+Optional extension (chi khi duoc yeu cau):
+
+`api-spec` / `ops-runbook + security-model` / `traceability` / `release-readiness` / `adr`
+
+Publish duoc thuc hien khi cac gate bat buoc cho scope hien tai da pass.

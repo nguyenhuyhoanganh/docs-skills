@@ -13,6 +13,12 @@ Define implementation-grade detail without drifting from HLD/requirements.
 Do not invent scope not present in requirements/HLD.
 </HARD-GATE>
 
+## Template Reference (Required, Reference-Only)
+
+- Consult `references/dld.template.md` before drafting or updating DLD.
+- Use the template as structure guidance only; adapt for module-specific behavior.
+- Do not keep unresolved placeholders in final content.
+
 ## Required Sections
 
 - Module decomposition

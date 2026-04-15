@@ -10,8 +10,17 @@ description: Use when publishing or updating approved documentation in Confluenc
 Publish documentation in a controlled, auditable way.
 
 <HARD-GATE>
-No publish without completed traceability gate.
+No publish without required gates for the current scope passing.
+Traceability gate is mandatory only when traceability/governance artifact is in scope.
 </HARD-GATE>
+
+## Scope-Based Publish Gate Mapping
+
+- Core-4 publish: require `G0`, `G1`, `G2`, `G3`, `G7`
+- If `api-spec` exists in scope: require `G4`
+- If `ops-runbook` or `security-model` exists in scope: require `G5`
+- If traceability/governance artifact exists in scope: require `G6`
+- If reverse-engineering/backfill mode: require `G8`
 
 ## MCP Preflight (Mandatory Before Any Publish Attempt)
 
@@ -63,7 +72,7 @@ Every page must include:
 - `status`
 - `version`
 - `review_date`
-- `traceability_ref`
+- `traceability_ref` (dedicated traceability page link or inline reference key)
 
 ## Required Status Transition
 
@@ -93,6 +102,12 @@ When `PUBLISH_MODE=LOCAL_FALLBACK`, create:
 - `docs/publish-bundle/<timestamp>/manifest.json`
 - `docs/publish-bundle/<timestamp>/review-tasks.json`
 - `docs/publish-bundle/<timestamp>/change-summary.md`
+
+Use local reference templates when generating bundle files:
+
+- `references/manifest.template.json`
+- `references/review-tasks.template.json`
+- `references/change-summary.template.md`
 
 `manifest.json` must include for each page candidate:
 

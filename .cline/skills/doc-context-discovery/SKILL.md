@@ -53,6 +53,7 @@ No create/update authoring before discovery report exists.
 - Relevance scoring table
 - Reuse/update/new-page decision
 - Missing context list
+- Recommended `doc_type` and matching local `references/*.template.md` reference for next authoring phase
 
 ## Low-Confidence Rule
 
