@@ -1,6 +1,6 @@
-﻿---
+---
 name: using-doc-superpowers
-description: Use when starting any conversation in this repository to enforce discovery-first workflow routing, Confluence governance, and publication gates before action.
+description: Use when starting any conversation in this repository to enforce discovery-first single-workflow orchestration, Confluence governance, and publication gates before action.
 ---
 
 <SUBAGENT-STOP>
@@ -18,7 +18,7 @@ If a phase-specific skill applies, you do not have a choice. Use it.
 1. User explicit instructions
 2. `.clinerules/superpowers.md`
 3. This skill (`using-doc-superpowers`) as workflow bootstrap
-4. `.clinerules/workflows/*`
+4. `.clinerules/workflows/document-management.md`
 5. Other skills in `.cline/skills`
 6. Default system behavior
 
@@ -29,7 +29,10 @@ Produce enterprise documentation with explicit discovery evidence, gates, and tr
 No ad-hoc writing.
 No out-of-order architecture/design drafting.
 No publish without gate evidence.
-Default new-feature authoring scope is core-4: `feature-brief -> requirements -> hld -> dld`.
+Single workflow entrypoint: `document-management`.
+Workflow modes:
+- `new-feature`: core-4 (`feature-brief -> requirements -> hld -> dld`)
+- `update-existing`: update impacted docs from codebase + existing docs + user request
 Optional artifacts (API/Ops/Security/Traceability/Release-readiness/ADR) are added only when requested or scope requires.
 
 ## Runtime Rule Source
@@ -119,32 +122,28 @@ Before any create/update flow:
 3. Reuse/update existing docs when possible
 4. If relevance is low, ask user for pointers before authoring
 
-## Workflow Router
+## Single Workflow Router
+
+Use only `.clinerules/workflows/document-management.md`.
 
 ```dot
 digraph workflow_router {
     "Doc request received" [shape=doublecircle];
     "Context discovery done?" [shape=diamond];
-    "New feature docs?" [shape=diamond];
-    "Code change update?" [shape=diamond];
-    "Legacy/backfill?" [shape=diamond];
-    "Periodic refresh?" [shape=diamond];
-    "Incident-driven update?" [shape=diamond];
+    "Mode = new-feature?" [shape=diamond];
+    "Run core-4 pipeline\n(intake -> requirements -> HLD -> DLD)" [shape=box];
+    "Run update-existing mode\n(lifecycle + impacted-section updates)" [shape=box];
+    "Optional artifacts requested/scope-required?" [shape=diamond];
+    "Add API/Ops/Security/Traceability artifacts" [shape=box];
 
     "Doc request received" -> "Context discovery done?";
     "Context discovery done?" -> "doc-context-discovery" [label="no"];
-    "Context discovery done?" -> "New feature docs?" [label="yes"];
-
-    "New feature docs?" -> "Default pipeline: intake -> requirements -> HLD -> DLD" [label="yes"];
-    "New feature docs?" -> "Code change update?" [label="no"];
-    "Code change update?" -> "Workflow: update-doc-from-code-change" [label="yes"];
-    "Code change update?" -> "Legacy/backfill?" [label="no"];
-    "Legacy/backfill?" -> "Workflow: backfill-doc-from-codebase" [label="yes"];
-    "Legacy/backfill?" -> "Periodic refresh?" [label="no"];
-    "Periodic refresh?" -> "Workflow: periodic-doc-refresh" [label="yes"];
-    "Periodic refresh?" -> "Incident-driven update?" [label="no"];
-    "Incident-driven update?" -> "Workflow: incident-driven-doc-update" [label="yes"];
-    "Incident-driven update?" -> "Workflow: create-doc-from-existing-assets" [label="no"];
+    "Context discovery done?" -> "Mode = new-feature?" [label="yes"];
+    "Mode = new-feature?" -> "Run core-4 pipeline\n(intake -> requirements -> HLD -> DLD)" [label="yes"];
+    "Mode = new-feature?" -> "Run update-existing mode\n(lifecycle + impacted-section updates)" [label="no"];
+    "Run core-4 pipeline\n(intake -> requirements -> HLD -> DLD)" -> "Optional artifacts requested/scope-required?";
+    "Run update-existing mode\n(lifecycle + impacted-section updates)" -> "Optional artifacts requested/scope-required?";
+    "Optional artifacts requested/scope-required?" -> "Add API/Ops/Security/Traceability artifacts" [label="yes"];
 }
 ```
 

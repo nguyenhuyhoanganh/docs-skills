@@ -10,7 +10,7 @@ Tai lieu nay dinh nghia gate chat luong cho pipeline tai lieu phat trien phan me
   - `G5` khi co `ops-runbook` hoac `security-model`.
   - `G6` khi co traceability/governance artifact rieng.
   - `G7` khi co publish/update Confluence.
-  - `G8` cho reverse-engineering/backfill tu code hien huu.
+  - `G8` cho cac ca update-existing theo kieu reverse/backfill tu code hien huu.
 
 ## G0 - Discovery Gate (bat buoc truoc authoring)
 
@@ -122,9 +122,7 @@ Fail neu:
 - Publish khi gate bat buoc cho scope chua pass.
 - Thieu metadata hoac review task.
 
-## G8 - Reverse-Engineering Consistency Gate (khi dung doc tu code hien huu)
-
-Ap dung cho cac luong: `backfill-doc-from-codebase`, `reverse-engineer-feature-docs`.
+## G8 - Reverse/Backfill Consistency Gate (khi update-existing theo code hien huu)
 
 Pass khi:
 

@@ -19,10 +19,9 @@ Muc tieu cua bo tai lieu nay la chuan hoa tai lieu phat trien phan mem theo mo h
 
 ## 3) Skill & Workflow Surface
 
-- Workflows: `.clinerules/workflows/*`
+- Workflow: `.clinerules/workflows/document-management.md`
 - Skills: `.cline/skills/*`
 - Bootstrap hook: `.clinerules/hooks/TaskStart(.ps1)`
-- New reverse-engineer workflow: `.clinerules/workflows/reverse-engineer-feature-docs.md`
 
 ## 4) Template Library
 
@@ -49,9 +48,9 @@ Optional templates (on-demand):
 
 ## 6) Quy tac van hanh nhanh
 
-1. Route yeu cau vao workflow family phu hop (`workflow-router`).
+1. Chon mode trong workflow `document-management` (`new-feature` hoac `update-existing`).
 2. Chay discovery truoc moi create/update.
 3. New feature mac dinh: `feature-brief -> requirements -> hld -> dld`.
 4. Chi bo sung API/Ops/Security/Traceability/Release-readiness/ADR khi co yeu cau ro rang hoac scope bat buoc.
 5. Chay cac quality gate bat buoc theo scope truoc publish.
-6. Voi reverse-engineering tu code hien huu, ap dung them gate consistency theo `QUALITY_GATES.md` (G8).
+6. Voi update-existing theo reverse/backfill tu code hien huu, ap dung them gate consistency theo `QUALITY_GATES.md` (G8).

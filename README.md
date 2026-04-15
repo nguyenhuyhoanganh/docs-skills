@@ -1,4 +1,4 @@
-﻿# Document Management Superpowers Setup
+# Document Management Superpowers Setup
 
 This repository provides a strict, enterprise-grade workflow surface for managing product and engineering documentation with Confluence MCP tools.
 
@@ -10,7 +10,7 @@ This repository provides a strict, enterprise-grade workflow surface for managin
 
 ## Core Outcome
 
-Transform incoming feature requests into governed documentation sets with a core 4-document baseline:
+Transform incoming requests into governed documentation sets with a core 4-document baseline:
 
 - feature brief
 - requirements
@@ -29,20 +29,16 @@ For any create/update request, run context discovery first:
 
 Only after discovery can authoring workflows continue.
 
-## Workflow Catalog (Most Common)
+## Workflow Catalog (Minimal)
 
-1. New feature documentation (core-4 default, optional extensions on demand)
-2. Update docs from code change (delta update)
-3. Backfill docs from existing codebase (legacy systems)
-4. Create doc from existing assets (mixed source synthesis)
-5. Periodic refresh of stale docs (review-date driven)
-6. Incident-driven documentation updates (runbooks, postmortem links)
-7. Reverse-engineer feature docs from implemented code (unit-based verify/review loops)
+Single orchestrator workflow:
+- `.clinerules/workflows/document-management.md`
 
-Router workflow:
-- `.clinerules/workflows/workflow-router.md`
+Workflow modes:
+1. `new-feature`: create core-4 docs, then optional artifacts only when requested/scope-required.
+2. `update-existing`: update existing docs from codebase deltas + existing docs + explicit user request.
 
-## Feature Documentation Pipeline (for New Features, Default Mode)
+## Feature Documentation Pipeline (New Feature Mode)
 
 1. Context discovery
 2. Feature intake and context normalization
@@ -55,6 +51,15 @@ Router workflow:
    - Traceability/release-readiness/ADR artifacts
 7. Run required quality gates for the selected scope
 8. Confluence publish/update with metadata and review tasks (if requested)
+
+## Update Existing Pipeline (Update Mode)
+
+1. Context discovery with impacted codebase evidence
+2. Locate and score related existing docs
+3. Choose update-in-place/version/deprecate path
+4. Update only impacted sections and keep traceability
+5. Run required quality gates for actual scope
+6. Publish/update Confluence if requested
 
 ## Diagram Strategy (PlantUML First)
 
@@ -111,7 +116,7 @@ To run this repository as a full software-documentation operating model, use:
 - `.clinerules/hooks/TaskStart.ps1`: Windows bootstrap hook
 - `.clinerules/hooks/TaskStart`: macOS/Linux bootstrap hook
 - `.clinerules/superpowers.md`: Single rule source enforcing sequence and gates
-- `.clinerules/workflows/`: Workflow wrappers for documentation families
+- `.clinerules/workflows/document-management.md`: Single orchestrator workflow
 
 ## Confluence MCP Assumption
 
@@ -119,6 +124,3 @@ This setup assumes a Confluence MCP server is connected with tools for search/re
 
 Reference tool contract is defined in:
 - `.cline/skills/using-doc-superpowers/references/confluence-tools.md`
-
-
-

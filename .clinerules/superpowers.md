@@ -1,4 +1,4 @@
-﻿# Document Superpowers Rules
+# Document Superpowers Rules
 
 This project uses skills from `.cline/skills`.
 
@@ -6,8 +6,11 @@ Rules:
 
 - Runtime boundary: treat `.cline/*` and `.clinerules/*` as runtime instruction surface; treat root/docs markdown as user-facing reference only.
 - Before substantial work, load the relevant document skill.
-- Use skill-driven workflow for non-trivial document work.
+- Use single orchestrator workflow: `.clinerules/workflows/document-management.md`.
 - For any create/update task, run `doc-context-discovery` first.
+- Workflow mode selection is mandatory:
+  - `new-feature` for new feature documentation.
+  - `update-existing` for updating existing docs from codebase + existing docs + user request.
 - Before authoring, consult the matching local `references/*.template.md` in the active skill as reference.
 - For new feature docs, default authoring scope is core-4: `feature-brief -> requirements -> hld -> dld`.
 - Add API/Ops/Security/Traceability/Release-readiness/ADR artifacts only when user asks or scope demands.
@@ -21,5 +24,4 @@ Rules:
 - Prefer process skills first, then phase-specific authoring skills.
 - If discovery confidence is low, ask user for pointers (space/page links/keywords) before proceeding.
 - For enterprise or release-governed changes, include reliability/security/readiness artifacts as needed.
-- Support workflow families: new feature docs, update-from-change, backfill, periodic refresh, incident-driven updates, mixed-source synthesis, reverse-engineering.
 - Keep document lifecycle explicit: draft -> review -> approved -> published -> maintained -> archived.

@@ -1,59 +1,61 @@
-﻿# DOCS_CONTRIBUTING
+# DOCS_CONTRIBUTING
 
-Tài liệu này quy định cách đóng góp tài liệu cho `doc-management` theo chuẩn software development documentation.
+Tai lieu nay quy dinh cach dong gop tai lieu cho `doc-management` theo chuan software development documentation.
 
-## 1) Nguyên tắc bắt buộc
+## 1) Nguyen tac bat buoc
 
-- Mọi thay đổi create/update doc phải chạy `doc-context-discovery` trước.
-- Luồng mặc định cho feature mới chỉ gồm 4 tài liệu: `feature-brief -> requirements -> hld -> dld`.
-- Không viết HLD/DLD khi requirements chưa approved.
-- `api-spec`, `ops-runbook`, `security-model`, `traceability`, `release-readiness`, `adr` chỉ tạo khi có yêu cầu rõ hoặc scope bắt buộc.
-- Không publish nếu chưa qua các quality gate bắt buộc cho phạm vi hiện tại.
-- Chỉ bắt buộc `doc-traceability-and-gates` khi workflow có traceability/governance artifact.
-- Diagram kiến trúc/quy trình ưu tiên PlantUML.
-- Tài liệu publish phải có metadata: `doc_type`, `owner`, `status`, `version`, `review_date`, `traceability_ref` (có thể dùng ref inline nếu không có trang traceability riêng).
+- Moi thay doi create/update doc phai chay `doc-context-discovery` truoc.
+- Luong mac dinh cho feature moi chi gom 4 tai lieu: `feature-brief -> requirements -> hld -> dld`.
+- Khong viet HLD/DLD khi requirements chua approved.
+- `api-spec`, `ops-runbook`, `security-model`, `traceability`, `release-readiness`, `adr` chi tao khi co yeu cau ro hoac scope bat buoc.
+- Khong publish neu chua qua cac quality gate bat buoc cho pham vi hien tai.
+- Chi bat buoc `doc-traceability-and-gates` khi scope co traceability/governance artifact.
+- Diagram kien truc/quy trinh uu tien PlantUML.
+- Tai lieu publish phai co metadata: `doc_type`, `owner`, `status`, `version`, `review_date`, `traceability_ref` (co the dung ref inline neu khong co trang traceability rieng).
 
-## 2) Khi nào bắt buộc cập nhật tài liệu
+## 2) Khi nao bat buoc cap nhat tai lieu
 
-Bắt buộc cập nhật docs nếu PR có một trong các thay đổi sau:
+Bat buoc cap nhat docs neu PR co mot trong cac thay doi sau:
 
-- Thay đổi behavior user-facing.
-- Thay đổi API/Event contract.
-- Thay đổi kiến trúc (service boundary, data flow, dependency).
-- Thay đổi SLI/SLO/runbook/security control.
-- Thay đổi policy compatibility/versioning/deprecation.
+- Thay doi behavior user-facing.
+- Thay doi API/Event contract.
+- Thay doi kien truc (service boundary, data flow, dependency).
+- Thay doi SLI/SLO/runbook/security control.
+- Thay doi policy compatibility/versioning/deprecation.
 
-## 3) Quy trình đóng góp chuẩn
+## 3) Quy trinh dong gop chuan
 
-1. Xác định workflow family phù hợp (`workflow-router`).
-2. Chạy discovery để tìm trang liên quan và quyết định update/reuse/new.
-3. Soạn core-4 docs theo template tương ứng trong `docs/templates/`.
-4. Nếu có yêu cầu, bổ sung các tài liệu optional cần thiết theo scope.
-5. Chạy quality gate theo `QUALITY_GATES.md` cho đúng phạm vi.
-6. Nếu pass và có yêu cầu publish: publish/update và set metadata + reviewer task.
+1. Chon mode trong workflow duy nhat `document-management`:
+   - `new-feature`
+   - `update-existing`
+2. Chay discovery de tim trang lien quan va quyet dinh update/reuse/new.
+3. Soan core-4 docs theo template tuong ung trong `docs/templates/` (neu mode `new-feature`) hoac cap nhat dung section bi anh huong (neu mode `update-existing`).
+4. Neu co yeu cau, bo sung cac tai lieu optional can thiet theo scope.
+5. Chay quality gate theo `QUALITY_GATES.md` cho dung pham vi.
+6. Neu pass va co yeu cau publish: publish/update va set metadata + reviewer task.
 
-## 4) Checklist trước khi mở PR docs
+## 4) Checklist truoc khi mo PR docs
 
-- [ ] Đã chọn đúng workflow.
-- [ ] Đã có evidence discovery (codebase + Confluence).
-- [ ] Đã dùng đúng template.
-- [ ] Không còn `TBD`/`TODO` placeholder.
-- [ ] Link nội bộ còn hợp lệ.
-- [ ] Diagram source (PlantUML/Mermaid fallback) có đính kèm.
-- [ ] Đã cập nhật traceability matrix nếu workflow có traceability/governance artifact.
-- [ ] Metadata đầy đủ và nhất quán.
+- [ ] Da chon dung mode trong workflow `document-management`.
+- [ ] Da co evidence discovery (codebase + Confluence).
+- [ ] Da dung dung template.
+- [ ] Khong con `TBD`/`TODO` placeholder.
+- [ ] Link noi bo con hop le.
+- [ ] Diagram source (PlantUML/Mermaid fallback) co dinh kem.
+- [ ] Da cap nhat traceability matrix neu scope co traceability/governance artifact.
+- [ ] Metadata day du va nhat quan.
 
-## 5) Quy tắc review
+## 5) Quy tac review
 
-Reviewer tập trung vào:
+Reviewer tap trung vao:
 
-- Tính đúng/sát thực tế hệ thống.
-- Tính đo được (đặc biệt FR/NFR/acceptance criteria/SLO).
-- Tính traceability từ `REQ-ID` đến các artifact nằm trong phạm vi tài liệu.
-- Tính vận hành được (runbook/escalation/rollback).
+- Tinh dung/sat thuc te he thong.
+- Tinh do duoc (dac biet FR/NFR/acceptance criteria/SLO).
+- Tinh traceability tu `REQ-ID` den cac artifact nam trong pham vi tai lieu.
+- Tinh van hanh duoc (runbook/escalation/rollback).
 
-## 6) Quy tắc đặt tên và version
+## 6) Quy tac dat ten va version
 
-- Tên trang phải phản ánh domain + artifact type + scope.
-- Dùng version monotonic hoặc semver, nhưng phải nhất quán theo `doc_type`.
-- Nếu breaking change ở contract/architecture: bắt buộc ghi migration path + sunset timeline.
+- Ten trang phai phan anh domain + artifact type + scope.
+- Dung version monotonic hoac semver, nhung phai nhat quan theo `doc_type`.
+- Neu breaking change o contract/architecture: bat buoc ghi migration path + sunset timeline.
